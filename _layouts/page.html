@@ -34,6 +34,11 @@ into the {body} of the default.hbs template -->
             {% endif %}
 
             <section class="post-full-content">
+                {% if page.title == "About me" %}
+                <img src="/assets/images/girish.png" alt="Markdown Monster icon" height="300" width="300" />
+                <h1 style="text-align: center; padding-top: 0px; padding-bottom: 45px;">Girish Oemrawsingh</h1>
+
+                {% endif %}
                 {{ content }}
             </section>
 

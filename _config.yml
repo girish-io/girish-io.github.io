@@ -11,10 +11,10 @@ baseurl: /
 # Website info
 title: Girish-IO
 description: My personal blog for writing about my discoveries and taking notes.
-cover: assets/images/blog-cover.jpg
+cover: assets/images/cover.png
 logo: assets/images/blog-icon.png
-logo_dark: assets/images/favicon.png
-favicon: assets/images/favicon.png
+logo_dark: assets/images/favicon2.png
+favicon: assets/images/favicon2.png
 production_url: https://girish-io.github.io/
 source_url: https://github.com/girish-io/girish-io.github.io
 CNAME: #add cname for website to be created
@@ -24,8 +24,10 @@ navigation: True # show the navbar links
 subscribers: True # you need to connect an external service for this to work,
 # if 'True' the submit button is disabled for now, but you can change that
 # by editing `_includes/subscribe-form.html`
-twitter: tryghost # replace by your username
-facebook: ghost # replace by your username
+twitter:  # replace by your username
+facebook: girish.io.git # replace by your username
+github: girish-io # replace by your username
+email: girish-io@pm.me # replace by your E-mail
 
 # Disqus
 disqus: True

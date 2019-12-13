@@ -1,17 +1,22 @@
 ---
 layout: page
 current: about
-title: About
+title: About me
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
 subclass: 'post page'
 ---
 
-Ghost is professional publishing platform designed for modern journalism. This is a demo site of a basic Ghost install to give you a general sense of what a new Ghost site looks like when set up for the first time.
 
-> If you'd like to set up a site like this for yourself, head over to [Ghost.org](https://ghost.org/) and start a free 14 day trial to give Ghost a try!
+Why hello there,
 
-If you're a developer: Ghost is a completely open source (MIT) Node.js application built on a JSON API with an Ember.js admin client. It works with MySQL and SQLite, and is publicly available [on Github](https://github.com/TryGhost/ghost).
+I am 17 years old, a hobbyist programmer based in [Paramaribo, Suriname](https://www.google.com/maps/place/Paramaribo/@5.8483205,-55.2478873,12z/data=!3m1!4b1!4m5!3m4!1s0x8d083520e203f743:0x97cf2079da3f4063!8m2!3d5.8520355!4d-55.2038278) and am really passionate about programming.
 
-If you need help with using Ghost, you'll find a ton of useful articles on [our knowledgebase](https://help.ghost.org/), as well as extensive [developer documentation](https://docs.ghost.org/).
+I have a moderate amount of experience with [Python](https://en.wikipedia.org/wiki/Python_(programming_language)) and [C/C++](https://cs-fundamentals.com/tech-interview/c/difference-between-c-and-cpp.php) programming.
+
+> Some added extras are that I am experienced with web development ([Flask](https://www.palletsprojects.com/p/flask/), [React.js](https://reactjs.org), [Sass](https://sass-lang.com), etc) and some [Linux Kernel Module](https://en.wikipedia.org/wiki/Loadable_kernel_module) development.
+
+Some of the things I've written were distributed web crawlers (for price extraction from online stores & the entire internet? lol) and a small UPnP client library for Python.
+
+From time to time, usually when I'm bored, I do some random penetration testing on websites / software with the hopes of finding something interesting :)
