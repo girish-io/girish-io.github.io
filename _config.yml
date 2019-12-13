@@ -7,15 +7,14 @@ words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /
-url: https://girish-io.github.io
 
 # Website info
 title: Girish-IO
 description: My personal blog for writing about my discoveries and taking notes.
-cover: /assets/images/cover.png
-logo: /assets/images/blog-icon.png
-logo_dark: /assets/images/favicon2.png
-favicon: /assets/images/favicon2.png
+cover: assets/images/cover.png
+logo: assets/images/blog-icon.png
+logo_dark: assets/images/favicon2.png
+favicon: assets/images/favicon2.png
 production_url: https://girish-io.github.io/
 source_url: https://github.com/girish-io/girish-io.github.io
 CNAME: #add cname for website to be created
