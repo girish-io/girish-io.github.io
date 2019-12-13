@@ -2,21 +2,21 @@
 markdown: kramdown
 highlighter: rouge
 paginate: 100 # it will paginate after this number
-language: 'en-uk'
+language: 'en-us'
 words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
-baseurl: /jasper2/
+baseurl: /
 
 # Website info
-title: Ghost
-description: The professional publishing platform
+title: Girish-IO
+description: My personal blog for writing about my discoveries and taking notes.
 cover: assets/images/blog-cover.jpg
 logo: assets/images/blog-icon.png
 logo_dark: assets/images/favicon.png
 favicon: assets/images/favicon.png
-production_url: https://jekyller.github.io/jasper2/
-source_url: https://github.com/jekyller/jasper2/
+production_url: https://girish-io.github.io/
+source_url: https://github.com/girish-io/girish-io.github.io
 CNAME: #add cname for website to be created
 
 # Social info
@@ -28,11 +28,11 @@ twitter: tryghost # replace by your username
 facebook: ghost # replace by your username
 
 # Disqus
-disqus: False
-disqus_shortname: jekyller # replace with your disqus username
+disqus: True
+disqus_shortname: girish-io # replace with your disqus username
 
 # Google Analytics
-google_analytics: UA-69281367-1 # replace with your GA tracking identifier
+google_analytics: UA-154551702-1 # replace with your GA tracking identifier
 
 # Permalinks
 permalink: /:title
