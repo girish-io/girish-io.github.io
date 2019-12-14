@@ -8,6 +8,19 @@
     
       
       <item>
+        <title>Tele0ops - Telesur Resource Starvation Attack Vulnerability</title>
+        
+          <description>A resource starvation vulnerability has been discovered on Telesur’s website, the government-owned telecommunications company for Suriname. The resource starvation vulnerability can lead to a Denial of Service (DoS) of the server.</description>
+        
+        <pubDate>Fri, 13 Dec 2019 22:43:01 -0300</pubDate>
+        <link>
+        https://girish-io.github.io/2019/12/13/tele0ops-resource-starvation-attack-vulnerability</link>
+        <guid isPermaLink="true">https://girish-io.github.io/2019/12/13/tele0ops-resource-starvation-attack-vulnerability</guid>
+      </item>
+      
+    
+      
+      <item>
         <title>Let's get bloggin'!</title>
         
           <description>&lt;p&gt;Hey there and welcome to my Blog!&lt;/p&gt;
@@ -16,8 +29,8 @@
         
         <pubDate>Fri, 13 Dec 2019 10:28:00 -0300</pubDate>
         <link>
-        https://girish-io.github.io/welcome</link>
-        <guid isPermaLink="true">https://girish-io.github.io/welcome</guid>
+        https://girish-io.github.io/2019/12/13/welcome</link>
+        <guid isPermaLink="true">https://girish-io.github.io/2019/12/13/welcome</guid>
       </item>
       
     

