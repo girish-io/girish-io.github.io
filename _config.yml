@@ -16,6 +16,7 @@ logo: assets/images/blog-icon.png
 logo_dark: assets/images/favicon2.png
 favicon: assets/images/favicon2.png
 production_url: https://girish-io.github.io
+url: https://girish-io.github.io
 source_url: https://github.com/girish-io/girish-io.github.io
 CNAME: #add cname for website to be created
 
