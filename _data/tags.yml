@@ -18,3 +18,7 @@ welcome:
   name: welcome
   description: False
   cover: False
+exploitation:
+  name: exploitation
+  description: My random exploitation adventures & findings.
+  cover: False

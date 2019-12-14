@@ -38,7 +38,7 @@ disqus_shortname: girish-io # replace with your disqus username
 google_analytics: UA-154551702-1 # replace with your GA tracking identifier
 
 # Permalinks
-permalink: /:title
+permalink: /:year/:month/:day/:slug
 # permalink: /author/:author
 # permalink: /tag/:tag
 
