@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="https://girish-io.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://girish-io.github.io/" rel="alternate" type="text/html" /><updated>2019-12-13T21:49:33-03:00</updated><id>https://girish-io.github.io/</id><title type="html">Girish-IO</title><subtitle>My personal blog for writing about my discoveries and taking notes.</subtitle><entry><title type="html">Let’s get bloggin’!</title><link href="https://girish-io.github.io/welcome" rel="alternate" type="text/html" title="Let's get bloggin'!" /><published>2019-12-13T10:28:00-03:00</published><updated>2019-12-13T10:28:00-03:00</updated><id>https://girish-io.github.io/welcome</id><content type="html" xml:base="https://girish-io.github.io/welcome">&lt;p&gt;Hey there and welcome to my Blog!&lt;/p&gt;
+
+&lt;p&gt;I will use this blog to write down all my programming notes to make my life (and possibly yours as well) easier.&lt;/p&gt;
+
+&lt;p&gt;I will also write about all my discoveries during my random exploitation adventures whenever I get bored, so stay tuned hahaha&lt;/p&gt;
+
+&lt;p&gt;:)&lt;/p&gt;</content><author><name>Girish Oemrawsingh</name></author><category term="Welcome" /><summary type="html">Hey there and welcome to my Blog!</summary></entry></feed>
